@@ -1,10 +1,21 @@
 const express = require("express");
-const { chromium } = require("playwright");
+const { chromium, install } = require("playwright");
+const fs = require("fs");
+const path = require("path");
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.urlencoded({ extended: true }));
+
+// Instalar navegador se necessário
+(async () => {
+  const browserPath = path.join(process.env.HOME || "", ".cache", "ms-playwright");
+  if (!fs.existsSync(browserPath)) {
+    console.log("🛠 Instalando navegador Playwright...");
+    await install();
+  }
+})();
 
 app.get("/", (req, res) => {
   res.send(`
@@ -20,7 +31,9 @@ app.post("/abrir", async (req, res) => {
   if (!url) return res.send("URL inválida");
 
   try {
-    const browser = await chromium.launch();
+    const browser = await chromium.launch({
+      args: ["--no-sandbox", "--disable-setuid-sandbox"]
+    });
     const page = await browser.newPage();
     await page.goto(url);
     const html = await page.content();
