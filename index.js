@@ -21,11 +21,11 @@ app.post("/abrir", async (req, res) => {
 
   try {
     const browser = await puppeteer.launch({
-      headless: true,
+      headless: "new",
       args: ["--no-sandbox", "--disable-setuid-sandbox"]
     });
     const page = await browser.newPage();
-    await page.goto(url);
+    await page.goto(url, { waitUntil: "networkidle0" });
     const html = await page.content();
     await browser.close();
 
