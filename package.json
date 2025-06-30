@@ -3,11 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "postinstall": "playwright install",
     "start": "node index.js"
   },
   "dependencies": {
     "express": "^4.18.2",
-    "playwright": "^1.43.1"
+    "puppeteer": "^22.5.0"
   }
 }
