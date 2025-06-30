@@ -21,11 +21,12 @@ app.post("/abrir", async (req, res) => {
 
   try {
     const browser = await puppeteer.launch({
+      executablePath: puppeteer.executablePath(),
       headless: "new",
       args: ["--no-sandbox", "--disable-setuid-sandbox"]
     });
     const page = await browser.newPage();
-    await page.goto(url, { waitUntil: "networkidle0" });
+    await page.goto(url, { waitUntil: "networkidle0", timeout: 60000 });
     const html = await page.content();
     await browser.close();
 
@@ -35,6 +36,6 @@ app.post("/abrir", async (req, res) => {
   }
 });
 
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
   console.log("Servidor rodando na porta " + port);
 });
