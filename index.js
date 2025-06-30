@@ -1,5 +1,5 @@
 const express = require("express");
-const { chromium } = require("playwright");
+const puppeteer = require("puppeteer");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -20,7 +20,8 @@ app.post("/abrir", async (req, res) => {
   if (!url) return res.send("URL inválida");
 
   try {
-    const browser = await chromium.launch({
+    const browser = await puppeteer.launch({
+      headless: true,
       args: ["--no-sandbox", "--disable-setuid-sandbox"]
     });
     const page = await browser.newPage();
