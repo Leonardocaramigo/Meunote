@@ -1,8 +1,10 @@
 const express = require("express");
-const puppeteer = require("puppeteer");
+const axios = require("axios");
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+const API_KEY = "SUA_CHAVE_AQUI"; // Substitua pela sua chave da ScrapingBee
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -20,17 +22,15 @@ app.post("/abrir", async (req, res) => {
   if (!url) return res.send("URL inválida");
 
   try {
-    const browser = await puppeteer.launch({
-      executablePath: puppeteer.executablePath(),
-      headless: "new",
-      args: ["--no-sandbox", "--disable-setuid-sandbox"]
+    const response = await axios.get("https://app.scrapingbee.com/api/v1", {
+      params: {
+        api_key: API_KEY,
+        url: url,
+        render_js: "true"
+      }
     });
-    const page = await browser.newPage();
-    await page.goto(url, { waitUntil: "networkidle0", timeout: 60000 });
-    const html = await page.content();
-    await browser.close();
 
-    res.send(`<pre>${html.replace(/</g, "&lt;")}</pre>`);
+    res.send(`<pre>${response.data.replace(/</g, "&lt;")}</pre>`);
   } catch (err) {
     res.send("Erro ao abrir o site: " + err.message);
   }
