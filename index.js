@@ -1,21 +1,10 @@
 const express = require("express");
-const { chromium, install } = require("playwright");
-const fs = require("fs");
-const path = require("path");
+const { chromium } = require("playwright");
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.urlencoded({ extended: true }));
-
-// Instalar navegador se necessário
-(async () => {
-  const browserPath = path.join(process.env.HOME || "", ".cache", "ms-playwright");
-  if (!fs.existsSync(browserPath)) {
-    console.log("🛠 Instalando navegador Playwright...");
-    await install();
-  }
-})();
 
 app.get("/", (req, res) => {
   res.send(`
