@@ -4,7 +4,7 @@ const axios = require("axios");
 const app = express();
 const port = process.env.PORT || 3000;
 
-const API_KEY = "SUA_CHAVE_AQUI"; // Substitua pela sua chave da ScrapingBee
+const API_KEY = "HE5BPZC91JQ0SF3CTWL0GSXL87M0D7KL1303806FG74VSKRUUNZD4NC2DO6HXCZN39FIBADB9FEW1R83";
 
 app.use(express.urlencoded({ extended: true }));
 
